@@ -1,0 +1,37 @@
+{
+    "name": "TimHieuPhapLuat",
+    "description": "Trang thông tin về pháp luật",
+    "sections": [
+        {
+            "title": "Thông Tin Cuộc Thi",
+            "content": [
+                {
+                    "title": "Giải thưởng",
+                    "link": "/708/Giai-thuong.html"
+                },
+                {
+                    "title": "Hướng dẫn",
+                    "link": "/709/Huong-dan.html"
+                },
+                {
+                    "title": "Thể lệ",
+                    "link": "/710/The-le.html"
+                }
+            ]
+        },
+        {
+            "title": "Thông Báo",
+            "content": [
+                {
+                    "message": "Cuộc thi trực tuyến tìm hiểu pháp luật về phòng, chống ma túy và phòng, chống tác hại của thuốc lá."
+                }
+            ]
+        }
+    ],
+    "contact": {
+        "organization": "Sở Tư Pháp Tỉnh Đồng Nai",
+        "address": "Số 02 Nguyễn Văn Trị, phường Thanh Bình, thành phố Biên Hòa, tỉnh Đồng Nai",
+        "phone": ["02513941586", "0987705309"],
+        "email": "ngocphucst@gmail.com"
+    }
+}

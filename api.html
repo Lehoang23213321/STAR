@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      width: 80%;
+      max-width: 600px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 24px;
+      color: #4a90e2;
+      text-align: center;
+    }
+    pre {
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      overflow: auto;
+    }
+    .json-key {
+      color: #d9534f;
+    }
+    .json-string {
+      color: #5cb85c;
+    }
+    .json-number {
+      color: #f0ad4e;
+    }
+    .json-boolean {
+      color: #0275d8;
+    }
+    .notification {
+  color: #d9534f; /* Màu đỏ */
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+  </style>
+</head>
+<body><div class="notification">
+    Đây là dữ liệu JSON từ API!
+  </div>
+  <pre id="json-output"></pre>
+  
+  <div class="container">
+    <h1>Thông tin Pháp Luật API</h1>
+    <pre id="json-output"></pre>
+  </div>
+
+  <script>
+    // Lấy dữ liệu từ API và hiển thị với định dạng màu sắc
+    fetch('/api/site-info')
+      .then(response => response.json())
+      .then(data => {
+        const jsonOutput = document.getElementById('json-output');
+        jsonOutput.innerHTML = syntaxHighlight(JSON.stringify(data, null, 2));
+      });
+
+    // Hàm thêm màu sắc cho các phần tử JSON
+    function syntaxHighlight(json) {
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        let cls = 'json-number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'json-key';
+          } else {
+            cls = 'json-string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'json-boolean';
+        } else if (/null/.test(match)) {
+          cls = 'json-null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      });
+    }
+  </script>
+</body>
+</html>

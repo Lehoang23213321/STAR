@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cấu hình thiết bị và Điều khiển từ xa</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    h2 {
+      color: #4a90e2;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 400px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input[type="number"], input[type="checkbox"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #4a90e2;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #357ab7;
+    }
+
+    .remote-control {
+      margin-top: 30px;
+    }
+
+    .control-buttons button {
+      width: 48%;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Cấu hình thiết bị</h2>
+    <form id="configForm">
+      <label for="temperature">Nhiệt độ:</label>
+      <input type="number" id="temperature" name="temperature">
+      
+      <label for="pump">Bơm:</label>
+      <input type="checkbox" id="pump" name="pump">
+      
+      <label for="limit">Giới hạn cảnh báo:</label>
+      <input type="number" id="limit" name="limit">
+      
+      <button type="button" onclick="submitConfig()">Lưu cấu hình</button>
+    </form>
+  </div>
+
+  <div class="container remote-control">
+    <h2>Điều khiển từ xa</h2>
+    <div class="control-buttons">
+      <button type="button" onclick="controlDevice('pump', 'on')">Bật Bơm</button>
+      <button type="button" onclick="controlDevice('pump', 'off')">Tắt Bơm</button>
+    </div>
+  </div>
+
+  <script>
+    // Hàm gửi cấu hình
+    function submitConfig() {
+      let temp = document.getElementById("temperature").value;
+      let pump = document.getElementById("pump").checked ? 1 : 0;
+      let limit = document.getElementById("limit").value;
+
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", "/saveConfig", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.send("temperature=" + temp + "&pump=" + pump + "&limit=" + limit);
+
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          alert("Cấu hình đã được lưu!");
+        }
+      };
+    }
+
+    // Hàm điều khiển thiết bị từ xa
+    function controlDevice(device, action) {
+      let xhr = new XMLHttpRequest();
+      xhr.open("GET", `/control?device=${device}&action=${action}`, true);
+      xhr.send();
+
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          alert(`Đã ${action === 'on' ? 'bật' : 'tắt'} ${device}`);
+        }
+      };
+    }
+  </script>
+</body>
+</html>
